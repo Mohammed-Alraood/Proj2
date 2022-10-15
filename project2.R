@@ -83,7 +83,25 @@ pall<- function(n,strategy, nreps){
 }
 
 
+#Example for n=5
 
+ranp<- sample(1:(2*5)) #selecting a random prisoner
+for(i in 1:3){
+ ip5<- pone(5,ranp,i,1000) #calculating individual probability for random prisoner, for each strategy
+ cat(c("\nThe Probability of a random prisoner success out of 5 with strategy", i, "is:", ip5))
+ jp5<- pall(5,i,1000) #calculating joint probabilities
+ cat(c("\nThe Probability of all 5 prisoners escaping with strategy", i, "is:", sprintf("%.5f", jp5)))
+ }
+
+#Example for n=50
+
+ranp<- sample(1:(2*50)) #selecting a random prisoner
+for(i in 1:3){
+  ip50<- pone(50,ranp,i,1000) #calculating individual probability for random prisoner, for each strategy
+  cat(c("\nThe Probability of a random prisoner out of 50 success with strategy", i, "is:", ip50))
+  jp50<- pall(50,i,1000) #calculating joint probabilities
+  cat(c("\nThe Probability of all 50 prisoners escaping with strategy", i, "is:", sprintf("%.5f", jp50)))
+}
 
 
 
