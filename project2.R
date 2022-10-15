@@ -14,13 +14,13 @@ pone <- function( n,k, strategy,nreps){
     
     
     if (strategy==1) { #If strategy 1, do the following
-      card<-cards[k]  #Choose the box with the prisoners number on, assign card with the card number inside the box
+      card<-cards[k]  #Choose the prisoners number box, assign card with the card number inside
       for (i in (1:n-1)){ #looping over n-1 boxes, since the prisoner already opened one box
         if (card==k){ #if the card is equal to the prisoners number
           count<-count+1 #add one to the success counter, as the prisoner was successful
           break}      #hence break out of the loop, he is finished
         else { #if the number is not the prisoners number
-          card=cards[card] #open the box corresponding to the card, reassign card value with card from the new box.
+          card=cards[card] #open the box corresponding to the card, reassign card value with card inside
                 }}
     }
     
