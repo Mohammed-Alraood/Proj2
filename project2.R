@@ -5,7 +5,6 @@
   # Strategy number used for number search
   #nreps: the number of times to replicate for accurate probability
   #function returns a number between 0 and 1, being the probability of the prisoner
-    #escaping using corresponding strategy
 pone <- function( n,k, strategy,nreps){
   count<-0 #counter set at 0, to add to it, every time a prisoner is successful
   
