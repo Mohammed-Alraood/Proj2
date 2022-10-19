@@ -10,8 +10,7 @@ pone <- function( n,k, strategy,nreps){
   count<-0 #counter set at 0, to add to it, every time a prisoner is successful
   
   for (i in 1:nreps){  #replicating the simulation nreps amount of times
-    cards=sample(1:(2*n))  #randomly assigning the card numbers to 2*n boxes
-    
+    cards<-sample(1:(2*n))  #randomly assigning the card numbers to 2*n boxes
     
     if (strategy==1) { #If strategy 1, do the following
       card<-cards[k]  #Choose the prisoners number box, assign card with the card number inside
@@ -20,7 +19,7 @@ pone <- function( n,k, strategy,nreps){
           count<-count+1 #add one to the success counter, as the prisoner was successful
           break}      #hence break out of the loop, he is finished
         else { #if the number is not the prisoners number
-          card=cards[card] #open the box corresponding to the card, reassign card value with card inside
+          card<-cards[card] #open the box corresponding to the card, reassign card value with card inside
                 }}
     }
     
@@ -33,7 +32,7 @@ pone <- function( n,k, strategy,nreps){
           count<-count+1 #add one to the success counter, as the prisoner was successful
           break}      #hence break out of the loop, he is finished
         else { #if the number is not the prisoners number
-          card=cards[card] #open the box corresponding to the card, reassign card value with card from the new box.
+          card<-cards[card] #open the box corresponding to the card, reassign card value with card from the new box.
         }}
       
       
@@ -106,5 +105,64 @@ for(i in 1:3){
 
 
 
-
-
+##Function that estimates the probability of loop lengths from 1:2n atleast once in random shuffling of cards to boxes
+dloop <- function(n,nreps){
+  k<- 1:(2*n) #all the prisoners
+  
+  #empty vector to store each time a loop is found
+  #entry for loops[i] will contain how many times a loop of length i is found
+  loops<- integer(2*n) 
+  for (i in (1:nreps)){ # repeating the simulation nreps times
+    cards<- sample(1:(2*n)) #randomly shuffling the cards
+    for (ii in k){ #looping over each prisoner
+      box<- sample(cards,1) #randomly selecting a box to begin with
+      card<-cards[box] #assigning the card found in that box to card  
+      
+      #opened vector will contain all of the cards the prisoner has found in sequential order
+      opened<- c(card) # assign first entry as the first card found
+      for (j in 1:((2*n)-1)){ #now loop to open all other boxes
+        if (card==ii){  #if prisoner card found
+          break        #break loop, no cycle found
+        }
+        else{
+          card<-cards[card] #assign the next card to the current card
+          opened<-append(opened,card) # append this entry to the found cards vector
+        }
+      }
+      
+      #last entry of opened vector will have to be removed for the next loop to work correctly
+      
+      opened<- opened[-(length(opened))] 
+      
+      if( card %in% opened){ #if the card was previously found
+        #means card was found more than once and we have found a loop
+        oi<- which(opened %in% card) #indices of the opened vector that contain the current card
+        
+        if (length(oi)==1){  # this condition for small n, such as 1, card will only be contained once
+          ll<-(length(opened)+1)-oi #finding how many boxes were opened in the loop
+        }
+        else{
+          ll<- oi[2]-oi[1] #otherwise, difference in indices is how many boxes opened between
+          #ll is the loop length
+        }
+        
+        #add one to the number of loops of length ll stored in loops
+        #loops esentially tallies how many times we come across each loop length in the simulation
+        loops[ll]=loops[ll]+1
+      }
+      
+      
+    }
+    
+    
+  }
+  
+  
+  
+  
+  
+  #to find probabilities, divide total number of each length by nreps
+  loops=loops/nreps
+  return(loops)
+  
+}
