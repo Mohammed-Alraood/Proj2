@@ -10,7 +10,7 @@
 #Mohammed Alraood s2227255 contributions: final part for calling dloop, visualising 
       #probabilities and calculating probability of no loops longer than 50 length.
 
-#Xinyan Chen s2304087 contributions: N/A 
+#Xinyan Chen s2304087 contributions: explaining the results from examples n=50 and n=500 
 
 
 
