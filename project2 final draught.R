@@ -1,3 +1,19 @@
+#Group #36
+#Group Member: Chloe Bircham s2415006, Mohammed Alraood s2227255, Xinyan Chen s2304087
+#https://github.com/Mohammed-Alraood/Proj2.git
+
+#Chloe Bircham s2415006 Contributions:
+    #functions pone, stratp, fixcards, pall, and both examples for n=5, n=50
+
+#Chloe Bircham s2415006 and Mohammed Alraood s2227255 collaborated together to produce dloop function
+
+#Mohammed Alraood s2227255 contributions: final part for calling dloop, visualising 
+      #probabilities and calculating probability of no loops longer than 50 length.
+
+#Xinyan Chen s2304087 contributions: N/A 
+
+
+
 
 #Function that calculates the probability of the prisoner escaping
 #input n: number of boxes the prisoner can open, 2*n prisoners
@@ -175,28 +191,39 @@ dloop<- function(n,nreps){
   
   k<- 1:(2*n) #all the prisoners
   
-  #empty vector to store each time a loop is found
-  #entry for loops[i] will contain how many times a loop of length i is found
+  #empty vector to store each time a loop is found, for all simulations
+  #entry for loops[i] will contain if a loop of length i is found
   aloops<- integer(2*n)
   for (i in (1:nreps)){ # repeating the simulation nreps times
-    loops<- integer(2*n) #to store if a loop of length i is found
+    loops<- integer(2*n) #to store if a loop of length i is found within a single simulation
     cards<- sample(1:(2*n)) #randomly shuffling the cards
     for (ii in k){ #looping over each prisoner
-      card<-cards[ii]
-      opened<- c(card)
-      for (ij in (1:(2*n)-1)){
-        card<-cards[card]
-        opened<- append(opened,card)
+      card<-cards[ii] #using strategy 1, first card is found in respective prisoners numbered box
+      opened<- c(card) #creating a vector opened, will eventually store all cards found by the prisoner
+      for (ij in (1:(2*n)-1)){ #opening all remaining boxes
+        card<-cards[card] #each new card is found the box number corresponding to the previous card found 
+        opened<- append(opened,card) #every time a new card is found, append it to opened
       }
       
-      ioc<- which(opened %in% card)
-      ll<- ioc[2]-ioc[1]
-      loops[ll]<-1
+      ioc<- which(opened %in% ii) #find indices of the prisoners number in stored card history
+      ll<- ioc[2]-ioc[1] #the difference of two of these indices will be the loop length
+      loops[ll]<-1 #then assign that entry of loops a value of 1, indicating we have found atleast one loop of length ll
       
       
       
     }
-    aloops<-aloops+loops
+    aloops<-aloops+loops #summing how many times we found at least loop of each length over all simulations
   }
-  prob<- aloops/nreps
+  prob<- aloops/nreps #probability of each loop occurring at least once is the sum/total simulations
   return(prob)}
+
+
+#calling dloop function to estimate probability for n=50 with 1000 replications
+prob_of_loops<- dloop(50,1000)
+print(prob_of_loops) #print probabilities of 
+plot(prob_of_loops,type="l",main="Visualization of probability of loop lengths",xlab = "Loop Length", ylab= "Probability of respective loop length") #visualize the probabilities
+
+#assessing the probabilities that no loop longer than 50
+sum_prob_more_50<- sum(prob_of_loops[51:length(prob_of_loops)]) #sum probabilities more than 50
+prob_of_no_50 <- 1-sum_prob_more_50
+cat("The probability of no loop more than 50 is: ",prob_of_no_50, ".") #printing probability of no loop more than 50
