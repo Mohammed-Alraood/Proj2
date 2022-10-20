@@ -11,7 +11,6 @@ pone <- function( n,k, strategy,nreps){
   
   for (i in 1:nreps){  #replicating the simulation nreps amount of times
     cards<-sample(1:(2*n))  #randomly assigning the card numbers to 2*n boxes
-    
     if (strategy==1) { #If strategy 1, do the following
       card<-cards[k]  #Choose the prisoners number box, assign card with the card number inside
       for (i in (1:n-1)){ #looping over n-1 boxes, since the prisoner already opened one box
@@ -47,38 +46,103 @@ pone <- function( n,k, strategy,nreps){
           count<-count +1 #adds one to the success count
           break} #break, the prisoner is finished and has been successful
         }
-        
       }
-      
-      
-      
-    
-    
-    
-    
-    
-    
-    
   }
   prob<-count/nreps #the probability of the prisoner breaking free, is the number of successes/ total replicates
   return(prob) #returns the probability
 }
 
 
-pall<- function(n,strategy, nreps){
-  k<- 1:(2*n)     #All prisoner numbers
-  
-  #setting probability of full success to 1 to begin
-  pfs<-1
-  for (i in k){ #looping over all prisoners
+
+fixcards<- function(n){
+  #Function that can be called once in pall
+  #used to set same distribution of cards
+  carda<- sample(1:(2*n)) #randomly shuffle cards
+  return (carda)
+}
+
+
+
+stratp <- function( n,k, strategy,cards){ #function that takes main part of pone to be called later in pall
+  esc<-0 #sets the counter of if the prisoner escapes to 0.
+     #randomly assigning the card numbers to 2*n boxes
+    if (strategy==1) { #If strategy 1, do the following
+      card<-cards[k]  #Choose the prisoners number box, assign card with the card number inside
+      for (i in (1:n-1)){ #looping over n-1 boxes, since the prisoner already opened one box
+        if (card==k){ #if the card is equal to the prisoners number
+          esc<-1 #assigns the value of prisoner escaping to be 1.
+          break}      #hence break out of the loop, he is finished
+        else { #if the number is not the prisoners number
+          card<-cards[card] #open the box corresponding to the card, reassign card value with card inside
+        }}
+    }
     
-    #Individual prisoner probability of escaping
-    ipp<-pone(n,i,strategy,nreps) 
-    pfs<- pfs*ipp #multiplying probability of full success by individual probability
-    #Once loop terminates, all prisoner probabilities will have been multiplied
-    #leaving final probability of all prisoners escaping 
+    
+    if (strategy ==2){
+      box<- sample(cards,1) #randomly choose 1st box
+      card<-cards[box] #opening random box and assigning the card number inside
+      for (i in (1:n-1)){ #looping over n-1 boxes, since the prisoner already opened one box
+        if (card==k){ #if the card is equal to the prisoners number
+          esc<-1 #sets the value of prisoner escaping to 1
+          break}      #hence break out of the loop, he is finished
+        else { #if the number is not the prisoners number
+          card<-cards[card] #open the box corresponding to the card, reassign card value with card from the new box.
+        }}
+      
+      
+      
+    }
+    
+    if (strategy==3){
+      for(i in 1:n){ #opening n boxes
+        box<-sample(cards,1) #random box selected every time
+        card<-cards[box] #sets the value of prisoner escaping to 1.
+        if (card==k){ #if card is the same as the prisoners number
+          esc<-1 #adds one to the success count
+          break} #break, the prisoner is finished and has been successful
+      
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
   }
-  return(pfs)
+  return(esc) #returns value of 0 or 1, if the value is 1, prisoner escaped, if 0 prisoner did not escape.
+}
+
+
+
+pall<- function(n,strategy, nreps){
+  #input: n, where 2*n is number of prisoners
+  #       strategy chosen
+  #       nreps: number of times the simulation is to be repeated
+  #function that calculates the probability of all prisoners escaping
+  totesc<-0 #to being with, the number of simulations where all prisoners escape is obviously 0
+  for (m in (1:nreps)){ #repeating simulation nreps times
+    cards<-fixcards(n) # calling fixcards so that cards stay fixed when looping through all prisoners
+    totalp<-0 #to sum the prisoners that escape in one simulation, to begin with, it is 0  
+    k<- 1:(2*n)     #All prisoner numbers
+    
+    for (i in k){ #looping over all prisoners
+      #does the prisoner escape? if so, assign does=1, if not, does=0
+      does<-stratp(n,i,strategy,cards) 
+      #add does to the total number of prisoners that have escaped
+      #after all prisoners have attempted, totalp is the total number who succeeded
+      totalp<-totalp+does
+    }
+
+    if (totalp==(2*n)){ #if all prisoners escaped, add 1 to the number of simulations that were 100% successful
+      totesc<- totesc +1
+    }
+  }
+  prob<- totesc/nreps #dividing by nreps gives the probability of 100% of prisoners succeeding
+  return(prob)
 }
 
 
@@ -117,7 +181,6 @@ dloop <- function(n,nreps){
     for (ii in k){ #looping over each prisoner
       box<- sample(cards,1) #randomly selecting a box to begin with
       card<-cards[box] #assigning the card found in that box to card  
-      
       #opened vector will contain all of the cards the prisoner has found in sequential order
       opened<- c(card) # assign first entry as the first card found
       for (j in 1:((2*n)-1)){ #now loop to open all other boxes
@@ -162,7 +225,7 @@ dloop <- function(n,nreps){
   
   
   #to find probabilities, divide total number of each length by nreps
-  loops=loops/nreps
-  return(loops)
+  prob=loops/nreps
   
+  return(prob)
 }
