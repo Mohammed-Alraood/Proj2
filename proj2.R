@@ -3,7 +3,7 @@
 #contribution: 
 #Chloe: 
 #Mohammed: create the github project, work in last part of the assignment
-#Xinyan: 
+#Xinyan: work in part 4 of the assignment
 
 #Function that calculates the probability of the prisoner escaping
 #input n: number of boxes the prisoner can open, 2*n prisoners
