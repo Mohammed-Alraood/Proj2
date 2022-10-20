@@ -1,6 +1,9 @@
 #Group #36
 #Group Member: Chloe Bircham s2415006, Mohammed Alraood s2227255, Xinyan Chen s2304087
-
+#contribution: 
+#Chloe: 
+#Mohammed: create the github project, work in last part of the assignment
+#Xinyan: 
 
 #Function that calculates the probability of the prisoner escaping
 #input n: number of boxes the prisoner can open, 2*n prisoners
@@ -36,9 +39,7 @@ pone <- function( n,k, strategy,nreps){
         else { #if the number is not the prisoners number
           card<-cards[card] #open the box corresponding to the card, reassign card value with card from the new box.
         }}
-      
-      
-      
+         
     }
     
     if (strategy==3){
@@ -55,16 +56,12 @@ pone <- function( n,k, strategy,nreps){
   return(prob) #returns the probability
 }
 
-
-
 fixcards<- function(n){
   #Function that can be called once in pall
   #used to set same distribution of cards
   carda<- sample(1:(2*n)) #randomly shuffle cards
   return (carda)
 }
-
-
 
 stratp <- function( n,k, strategy,cards){ #function that takes main part of pone to be called later in pall
   esc<-0 #sets the counter of if the prisoner escapes to 0.
@@ -80,7 +77,6 @@ stratp <- function( n,k, strategy,cards){ #function that takes main part of pone
         }}
     }
     
-    
     if (strategy ==2){
       box<- sample(cards,1) #randomly choose 1st box
       card<-cards[box] #opening random box and assigning the card number inside
@@ -90,10 +86,7 @@ stratp <- function( n,k, strategy,cards){ #function that takes main part of pone
           break}      #hence break out of the loop, he is finished
         else { #if the number is not the prisoners number
           card<-cards[card] #open the box corresponding to the card, reassign card value with card from the new box.
-        }}
-      
-      
-      
+        }}  
     }
     
     if (strategy==3){
@@ -104,22 +97,10 @@ stratp <- function( n,k, strategy,cards){ #function that takes main part of pone
           esc<-1 #adds one to the success count
           break} #break, the prisoner is finished and has been successful
       
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    }  
   }
   return(esc) #returns value of 0 or 1, if the value is 1, prisoner escaped, if 0 prisoner did not escape.
 }
-
-
 
 pall<- function(n,strategy, nreps){
   #input: n, where 2*n is number of prisoners
@@ -149,8 +130,7 @@ pall<- function(n,strategy, nreps){
 }
 
 
-#Example for n=5
-
+#Example for n=5, when we have 10 prisoners
 ranp<- sample(1:(2*5)) #selecting a random prisoner
 for(i in 1:3){
  ip5<- pone(5,ranp,i,1000) #calculating individual probability for random prisoner, for each strategy
@@ -159,8 +139,7 @@ for(i in 1:3){
  cat(c("\nThe Probability of all 5 prisoners escaping with strategy", i, "is:", sprintf("%.5f", jp5)))
  }
 
-#Example for n=50
-
+#Example for n=50, when we have 100 prisoners
 ranp<- sample(1:(2*50)) #selecting a random prisoner
 for(i in 1:3){
   ip50<- pone(50,ranp,i,1000) #calculating individual probability for random prisoner, for each strategy
@@ -173,11 +152,12 @@ for(i in 1:3){
 ## 
 
 
-##Function that estimates the probability of loop lengths from 1:2n atleast once in random shuffling of cards to boxes
+##Function that estimates the probability of loop lengths from 1:2n at least once in random shuffling of cards to boxes
+#inputs to the function are the arguments n: number of prisoners, nreps: number of replication
+#output of function dloop is a 2n vector contains estimated probability of each loop length from 1 to 2n occurring at least once
+#In a random shuffling of cards to boxes based on strategy 1. 
 dloop<- function(n,nreps){
-  
   k<- 1:(2*n) #all the prisoners
-  
   #empty vector to store each time a loop is found
   #entry for loops[i] will contain how many times a loop of length i is found
   aloops<- integer(2*n)
@@ -195,9 +175,6 @@ dloop<- function(n,nreps){
       ioc<- which(opened %in% card)
       ll<- ioc[2]-ioc[1]
       loops[ll]<-1
-      
-      
-      
     }
     aloops<-aloops+loops
   }
@@ -205,12 +182,13 @@ dloop<- function(n,nreps){
   return(prob)
 }
 
-#calling dloop function to estimate probability for n=50 with 1000 replications
-prob_of_loops<- dloop(50,1000)
-print(prob_of_loops) #print probabilities of 
-plot(prob_of_loops,main="Visualization of probability of loops",xlab = "loop") #visualize the histogram of probability
+#estimate the probabilities of lengeth of loops
+prob_of_loops<- dloop(50,1000)#calling dloop function to estimate probability for n=50 with 1000 replications
+print(prob_of_loops) #print 2n-vector of probabilites 
+plot(prob_of_loops, main="Visualization of probability of loops", xlab = "loop") #visualize the probabilities
 
 #assessing the probabilities that no loop longer than 50
 sum_prob_more_50<- sum(prob_of_loops[51:length(prob_of_loops)]) #sum probabilities more than 50
 prob_of_no_50 <- 1-sum_prob_more_50
 cat("The probability of no loop more than 50 is: ",prob_of_no_50, ".") #printing probability of no loop more than 50
+
