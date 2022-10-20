@@ -149,7 +149,10 @@ for(i in 1:3){
 }
 
 ##The above shows surprising results that strategies 2 and 3 do not differ too much 
-## 
+##When n=5,the probability of individual success is about 40%-50%, among which the probability of strategy 1 is 48.4% which is the largest, and the probability of strategy 3 is the smallest which is 39.7%. 
+##However, only strategy 1 has a probability of these five prisoners to escape jointly, which is 33.7%. The remaining two strategies both have a joint probability of 0, which means they have almost no chance of successfully escaping.
+##When n=50, the probability of individual success is not much different from that when n=5. The probability of strategy 1 slightly increased to 52.1 percent, while it of strategy 2 decreased to a minimum of 37 percent.
+##The probability of a joint escape also does not change significantly from n=5, except for strategy 1, which drops slightly to 31.9%. The remaining two strategies still have no chance of successfully escaping.
 
 
 ##Function that estimates the probability of loop lengths from 1:2n at least once in random shuffling of cards to boxes
