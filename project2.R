@@ -171,6 +171,7 @@ for(i in 1:3){
 
 ##Function that estimates the probability of loop lengths from 1:2n atleast once in random shuffling of cards to boxes
 dloop<- function(n,nreps){
+  
   k<- 1:(2*n) #all the prisoners
   
   #empty vector to store each time a loop is found
