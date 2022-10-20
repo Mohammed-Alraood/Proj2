@@ -199,4 +199,15 @@ dloop<- function(n,nreps){
     aloops<-aloops+loops
   }
   prob<- aloops/nreps
-  return(prob)}
+  return(prob)
+}
+
+#calling dloop function to estimate probability for n=50 with 1000 replications
+prob_of_loops<- dloop(50,1000)
+print(prob_of_loops) #print probabilities of 
+plot(prob_of_loops,main="Visualization of probability of loops",xlab = "loop") #visualize the histogram of probability
+
+#assessing the probabilities that no loop longer than 50
+sum_prob_more_50<- sum(prob_of_loops[51:length(prob_of_loops)]) #sum probabilities more than 50
+prob_of_no_50 <- 1-sum_prob_more_50
+cat("The probability of no loop more than 50 is: ",prob_of_no_50, ".") #printing probability of no loop more than 50
