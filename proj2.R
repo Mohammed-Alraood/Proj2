@@ -1,3 +1,6 @@
+#Group #36
+#Group Member: Chloe Bircham s2415006, Mohammed Alraood s2227255, Xinyan Chen s2304087
+
 
 #Function that calculates the probability of the prisoner escaping
 #input n: number of boxes the prisoner can open, 2*n prisoners
