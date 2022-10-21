@@ -194,7 +194,7 @@ plot(prob_of_loops, type='l', main="Probability of loop lengths occuring at leas
 
 #assessing the probabilities that no loop longer than 50
 sum_prob_more_50<- sum(prob_of_loops[51:length(prob_of_loops)]) #sum probabilities more than 50
-prob_of_no_50 <- 1-sum_prob_more_50
+prob_of_no_50 <- 1-sum_prob_more_50 #calculate probability of no loop more than 50 
 cat("The probability of no loop more than 50 is: ",prob_of_no_50, ".") #printing probability of no loop more than 50
 
 #end of the prisoners problem simulation
