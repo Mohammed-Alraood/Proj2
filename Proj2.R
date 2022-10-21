@@ -3,7 +3,7 @@
 #https://github.com/Mohammed-Alraood/Proj2.git
 #contribution: 
 #Chloe: creation of all functions (pone, fixcards, stratp, pall, dloop)
-   #applied functions to examples n=5 and n=50
+#applied functions to examples n=5 and n=50
 #Mohammed: create the github project, last part of the assignment (application of dloop and graphing )
 #Xinyan: wrote comments about results of functions applied to examples n=5 and n=50
 
@@ -11,23 +11,23 @@
 #The Prisoner problem simulation
 
 #We have 2n prisoners, with unique numbers from 1 to 2n, 2n uniquely numbers boxes
-  #containing 2n uniquely numbered cards, shuffles randomly
+#containing 2n uniquely numbered cards, shuffles randomly
 #prisoners required to find the card with their number on, by opening maximum n boxes
 #if all prisoners find their own number by opening n boxes, then all of the prisoners go free
 
 #prisoners can open boxes in 3 ways:
-  #strategy 1: open the box that has their number on, then open the next box corresponding to the
-     #card found carry on this way until n boxes opened, or prisoner finds their number
-  #strategy2: Same as strategy one, however the first box they open is chosen at random.
-  #strategy 3: open n boxes randomly
+#strategy 1: open the box that has their number on, then open the next box corresponding to the
+#card found carry on this way until n boxes opened, or prisoner finds their number
+#strategy2: Same as strategy one, however the first box they open is chosen at random.
+#strategy 3: open n boxes randomly
 
 #Function that calculates the probability of a single prisoner finding their number
 #input n: number of boxes the prisoner can open, 2*n prisoners
-  # k: prisoner number
-  # Strategy number used for number search
-  #nreps: the number of times to replicate for accurate probability
-  #function returns a number between 0 and 1, being the probability of a single prisoner
-    #escaping using corresponding strategy
+# k: prisoner number
+# Strategy number used for number search
+#nreps: the number of times to replicate for accurate probability
+#function returns a number between 0 and 1, being the probability of a single prisoner
+#escaping using corresponding strategy
 pone <- function( n,k, strategy,nreps){
   count<-0 #counter set at 0, to add to it every time a prisoner is successful
   
@@ -41,7 +41,7 @@ pone <- function( n,k, strategy,nreps){
           break}      #hence break out of the loop, he is finished
         else { #if the number is not the prisoners number
           card<-cards[card] #open corresponding box, reassign card value with card inside
-                }}
+        }}
     }
     
     
@@ -55,7 +55,7 @@ pone <- function( n,k, strategy,nreps){
         else { #if the number is not the prisoners number
           card<-cards[card] #open corresponding box, reassign card value with card from the new box.
         }}
-         
+      
     }
     
     if (strategy==3){
@@ -65,8 +65,8 @@ pone <- function( n,k, strategy,nreps){
         if (card==k){ #if card is the same as the prisoners number
           count<-count +1 #adds one to the success count
           break} #break, the prisoner is finished and has been successful
-        }
       }
+    }
   }
   prob<-count/nreps #the probability of the prisoner breaking free, is the number of successes/ total replicates
   return(prob) #returns the probability
@@ -82,37 +82,37 @@ fixcards<- function(n){
 stratp <- function( n,k, strategy,cards){
   #function that takes main part of pone to be called later in pall. Contains basic strategy code
   esc<-0 #sets the counter of if the prisoner escapes to 0. (= to 0 or 1, 0 he doesnt escape, 1 he does)
-     #randomly assigning the card numbers to 2*n boxes
-    if (strategy==1) { #If strategy 1, do the following
-      card<-cards[k]  #Choose the prisoners number box, assign card with the card number inside
-      for (i in (1:n-1)){ #looping over n-1 boxes, since the prisoner already opened one box
-        if (card==k){ #if the card is equal to the prisoners number
-          esc<-1 #assigns the value of prisoner escaping to be 1.
-          break}      #hence break out of the loop, he is finished
-        else { #if the number is not the prisoners number
-          card<-cards[card] #open the box corresponding to the card, reassign card value with card inside
-        }}
-    }
-    
-    if (strategy ==2){
-      box<- sample(cards,1) #randomly choose 1st box
-      card<-cards[box] #opening random box and assigning the card number inside
-      for (i in (1:n-1)){ #looping over n-1 boxes, since the prisoner already opened one box
-        if (card==k){ #if the card is equal to the prisoners number
-          esc<-1 #sets the value of prisoner escaping to 1
-          break}      #hence break out of the loop, he is finished
-        else { #if the number is not the prisoners number
-          card<-cards[card] #open the corresponding box, reassign card value with card from the new box.
-        }}  
-    }
-    
-    if (strategy==3){
-      for(i in 1:n){ #opening n boxes
-        box<-sample(cards,1) #random box selected every time
-        card<-cards[box] #sets the value of prisoner escaping to 1.
-        if (card==k){ #if card is the same as the prisoners number
-          esc<-1 #adds one to the success count
-          break} #break, the prisoner is finished and has been successful
+  #randomly assigning the card numbers to 2*n boxes
+  if (strategy==1) { #If strategy 1, do the following
+    card<-cards[k]  #Choose the prisoners number box, assign card with the card number inside
+    for (i in (1:n-1)){ #looping over n-1 boxes, since the prisoner already opened one box
+      if (card==k){ #if the card is equal to the prisoners number
+        esc<-1 #assigns the value of prisoner escaping to be 1.
+        break}      #hence break out of the loop, he is finished
+      else { #if the number is not the prisoners number
+        card<-cards[card] #open the box corresponding to the card, reassign card value with card inside
+      }}
+  }
+  
+  if (strategy ==2){
+    box<- sample(cards,1) #randomly choose 1st box
+    card<-cards[box] #opening random box and assigning the card number inside
+    for (i in (1:n-1)){ #looping over n-1 boxes, since the prisoner already opened one box
+      if (card==k){ #if the card is equal to the prisoners number
+        esc<-1 #sets the value of prisoner escaping to 1
+        break}      #hence break out of the loop, he is finished
+      else { #if the number is not the prisoners number
+        card<-cards[card] #open the corresponding box, reassign card value with card from the new box.
+      }}  
+  }
+  
+  if (strategy==3){
+    for(i in 1:n){ #opening n boxes
+      box<-sample(cards,1) #random box selected every time
+      card<-cards[box] #sets the value of prisoner escaping to 1.
+      if (card==k){ #if card is the same as the prisoners number
+        esc<-1 #adds one to the success count
+        break} #break, the prisoner is finished and has been successful
       
     }  
   }
@@ -139,7 +139,7 @@ pall<- function(n,strategy, nreps){
       #after all prisoners have attempted, totalp is the total number who succeeded
       totalp<-totalp+does
     }
-
+    
     if (totalp==(2*n)){ #if all prisoners escaped, add 1 to the number of simulations that were 100% successful
       totesc<- totesc +1
       #After looping nreps times, totesc contains how many simulations had all prisoners escape 
@@ -153,11 +153,11 @@ pall<- function(n,strategy, nreps){
 #Example for n=5, when we have 10 prisoners
 ranp<- sample(1:(2*5)) #selecting a random prisoner
 for(i in 1:3){
- ip5<- pone(5,ranp,i,1000) #calculating individual probability for random prisoner, for each strategy
- cat(c("\nThe Probability of a random prisoner success out of 5 with strategy", i, "is:", ip5))
- jp5<- pall(5,i,1000) #calculating joint probabilities
- cat(c("\nThe Probability of all 5 prisoners escaping with strategy", i, "is:", sprintf("%.5f", jp5)))
- }
+  ip5<- pone(5,ranp,i,1000) #calculating individual probability for random prisoner, for each strategy
+  cat(c("\nThe Probability of a random prisoner success out of 5 with strategy", i, "is:", ip5))
+  jp5<- pall(5,i,1000) #calculating joint probabilities
+  cat(c("\nThe Probability of all 5 prisoners escaping with strategy", i, "is:", sprintf("%.5f", jp5)))
+}
 
 #Example for n=50, when we have 100 prisoners
 ranp<- sample(1:(2*50)) #selecting a random prisoner
@@ -194,10 +194,10 @@ dloop<- function(n,nreps){
       card<-cards[ii] #strategy 1 of openening first box
       #Vector to store history of boxes opened by a prisoner:
       opened<- c(card) #store card found in vector opened
-      firstcard<-card #used later to calculate loop length for the first card
       for (ij in (1:(2*n)-1)){ #now open all remaining boxes
         card<-cards[card] #each new box opened corresponding to previous card, (strategy 1)
         opened<- append(opened,card) #each time a new card is found, add to card history
+        firstcard<- card #use later for finding loop length of first card found
       }
       
       #indices where prisoners number is found used to calculate loop lengths
@@ -215,10 +215,11 @@ dloop<- function(n,nreps){
 #estimate the probabilities of lengeth of loops
 prob_of_loops<- dloop(50,1000)#calling dloop function to estimate probability for n=50 with 1000 replications
 print(prob_of_loops) #print 2n-vector of probabilites 
-plot(prob_of_loops, type='l', main="Probability of loop lengths ocuring atleast once", xlab = "Loop Length", ylab= "Probabilities of occurrence") #visualize the probabilities
+plot(prob_of_loops, type='l', main="Probability of loop lengths occuring at least once", xlab = "Loop Length", ylab= "Probability") #visualize the probabilities
 
 #assessing the probabilities that no loop longer than 50
 sum_prob_more_50<- sum(prob_of_loops[51:length(prob_of_loops)]) #sum probabilities more than 50
 prob_of_no_50 <- 1-sum_prob_more_50
 cat("The probability of no loop more than 50 is: ",prob_of_no_50, ".") #printing probability of no loop more than 50
 
+#end of the prisoners problem simulation
