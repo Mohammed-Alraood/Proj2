@@ -194,13 +194,14 @@ dloop<- function(n,nreps){
       card<-cards[ii] #strategy 1 of openening first box
       #Vector to store history of boxes opened by a prisoner:
       opened<- c(card) #store card found in vector opened
+      firstcard<-card #used later to find loop length for firstcard found
       for (ij in (1:(2*n)-1)){ #now open all remaining boxes
         card<-cards[card] #each new box opened corresponding to previous card, (strategy 1)
         opened<- append(opened,card) #each time a new card is found, add to card history
       }
       
       #indices where prisoners number is found used to calculate loop lengths
-      ioc<- which(opened %in% ii) #vector containing these indices 
+      ioc<- which(opened %in% firstcard) #vector containing these indices 
       #the difference between 2 of these entries is how many cards opened to find the prisoners number
       ll<- ioc[2]-ioc[1] 
       loops[ll]<-1 #assign 1 to loops(ll), to indicate we found atleast 1 loop of length ll
@@ -214,10 +215,11 @@ dloop<- function(n,nreps){
 #estimate the probabilities of lengeth of loops
 prob_of_loops<- dloop(50,1000)#calling dloop function to estimate probability for n=50 with 1000 replications
 print(prob_of_loops) #print 2n-vector of probabilites 
-plot(prob_of_loops, type='l', main="Probability of loop lengths ocuring atleast once", xlab = "Loop Length", ylab= "Probability") #visualize the probabilities
+plot(prob_of_loops, type='l', main="Probability of loop lengths occuring at least once", xlab = "Loop Length", ylab= "Probability") #visualize the probabilities
 
 #assessing the probabilities that no loop longer than 50
 sum_prob_more_50<- sum(prob_of_loops[51:length(prob_of_loops)]) #sum probabilities more than 50
 prob_of_no_50 <- 1-sum_prob_more_50
 cat("The probability of no loop more than 50 is: ",prob_of_no_50, ".") #printing probability of no loop more than 50
 
+#end of the prisoners problem simulation
