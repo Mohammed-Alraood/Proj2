@@ -21,6 +21,52 @@
   #strategy2: Same as strategy one, however the first box they open is chosen at random.
   #strategy 3: open n boxes randomly
 
+
+
+stratp <- function( n,k, strategy,cards){
+  #function that contains basic strategy code
+  #evaluates if prisoner k escapes or not under respective strategy
+  #input: n: 2n prisoners, k: prisoner number k, strategy used, cards: card distribution used.
+  #returns either 1 or 0, 1: the prisoner escapes, 0: prisoner does not.
+  esc<-0 #sets the counter of if the prisoner escapes to 0. (= to 0 or 1, 0 he doesnt escape, 1 he does)
+  #randomly assigning the card numbers to 2*n boxes
+  if (strategy==1) { #If strategy 1, do the following
+    card<-cards[k]  #Choose the prisoners number box, assign card with the card number inside
+    for (i in (1:n-1)){ #looping over n-1 boxes, since the prisoner already opened one box
+      if (card==k){ #if the card is equal to the prisoners number
+        esc<-1 #assigns the value of prisoner escaping to be 1.
+        break}      #hence break out of the loop, he is finished
+      else { #if the number is not the prisoners number
+        card<-cards[card] #open the box corresponding to the card, reassign card value with card inside
+      }}
+  }
+  
+  if (strategy ==2){
+    box<- sample(cards,1) #randomly choose 1st box
+    card<-cards[box] #opening random box and assigning the card number inside
+    for (i in (1:n-1)){ #looping over n-1 boxes, since the prisoner already opened one box
+      if (card==k){ #if the card is equal to the prisoners number
+        esc<-1 #sets the value of prisoner escaping to 1
+        break}      #hence break out of the loop, he is finished
+      else { #if the number is not the prisoners number
+        card<-cards[card] #open the corresponding box, reassign card value with card from the new box.
+      }}  
+  }
+  
+  if (strategy==3){
+    for(i in 1:n){ #opening n boxes
+      box<-sample(cards,1) #random box selected every time
+      card<-cards[box] #sets the value of prisoner escaping to 1.
+      if (card==k){ #if card is the same as the prisoners number
+        esc<-1 #adds one to the success count
+        break} #break, the prisoner is finished and has been successful
+      
+    }  
+  }
+  return(esc) 
+  #returns value of 0 or 1, if the value is 1, prisoner escaped, if 0 prisoner did not escape.
+}
+
 #Function that calculates the probability of a single prisoner finding their number
 #input n: number of boxes the prisoner can open, 2*n prisoners
   # k: prisoner number
@@ -33,41 +79,10 @@ pone <- function( n,k, strategy,nreps){
   
   for (i in 1:nreps){  #replicating the simulation nreps amount of times
     cards<-sample(1:(2*n))  #randomly assigning the card numbers to 2*n boxes
-    if (strategy==1) { #If strategy 1, do the following
-      card<-cards[k]  #Choose the prisoners number box, assign card with the card number inside
-      for (i in (1:n-1)){ #looping over n-1 boxes, since the prisoner already opened one box
-        if (card==k){ #if the card is equal to the prisoners number
-          count<-count+1 #add one to the success counter, as the prisoner was successful
-          break}      #hence break out of the loop, he is finished
-        else { #if the number is not the prisoners number
-          card<-cards[card] #open corresponding box, reassign card value with card inside
-                }}
-    }
-    
-    
-    if (strategy ==2){
-      box<- sample(cards,1) #randomly choose 1st box
-      card<-cards[box] #opening random box and assigning the card number inside
-      for (i in (1:n-1)){ #looping over n-1 boxes, since the prisoner already opened one box
-        if (card==k){ #if the card is equal to the prisoners number
-          count<-count+1 #add one to the success counter, as the prisoner was successful
-          break}      #hence break out of the loop, he is finished
-        else { #if the number is not the prisoners number
-          card<-cards[card] #open corresponding box, reassign card value with card from the new box.
-        }}
-         
-    }
-    
-    if (strategy==3){
-      for(i in 1:n){ #opening n boxes
-        box<-sample(cards,1) #random box selected every time
-        card<-cards[box] #assigning card to the card number found in the box
-        if (card==k){ #if card is the same as the prisoners number
-          count<-count +1 #adds one to the success count
-          break} #break, the prisoner is finished and has been successful
-        }
-      }
+    prisesc<-stratp(n,k,strategy,cards) #calling stratp to calculate if the prisoner escapes
+    count<-count+prisesc #if they escape, add one to the counter
   }
+  
   prob<-count/nreps #the probability of the prisoner breaking free, is the number of successes/ total replicates
   return(prob) #returns the probability
 }
@@ -79,46 +94,6 @@ fixcards<- function(n){
   return (carda)
 }
 
-stratp <- function( n,k, strategy,cards){
-  #function that takes main part of pone to be called later in pall. Contains basic strategy code
-  esc<-0 #sets the counter of if the prisoner escapes to 0. (= to 0 or 1, 0 he doesnt escape, 1 he does)
-     #randomly assigning the card numbers to 2*n boxes
-    if (strategy==1) { #If strategy 1, do the following
-      card<-cards[k]  #Choose the prisoners number box, assign card with the card number inside
-      for (i in (1:n-1)){ #looping over n-1 boxes, since the prisoner already opened one box
-        if (card==k){ #if the card is equal to the prisoners number
-          esc<-1 #assigns the value of prisoner escaping to be 1.
-          break}      #hence break out of the loop, he is finished
-        else { #if the number is not the prisoners number
-          card<-cards[card] #open the box corresponding to the card, reassign card value with card inside
-        }}
-    }
-    
-    if (strategy ==2){
-      box<- sample(cards,1) #randomly choose 1st box
-      card<-cards[box] #opening random box and assigning the card number inside
-      for (i in (1:n-1)){ #looping over n-1 boxes, since the prisoner already opened one box
-        if (card==k){ #if the card is equal to the prisoners number
-          esc<-1 #sets the value of prisoner escaping to 1
-          break}      #hence break out of the loop, he is finished
-        else { #if the number is not the prisoners number
-          card<-cards[card] #open the corresponding box, reassign card value with card from the new box.
-        }}  
-    }
-    
-    if (strategy==3){
-      for(i in 1:n){ #opening n boxes
-        box<-sample(cards,1) #random box selected every time
-        card<-cards[box] #sets the value of prisoner escaping to 1.
-        if (card==k){ #if card is the same as the prisoners number
-          esc<-1 #adds one to the success count
-          break} #break, the prisoner is finished and has been successful
-      
-    }  
-  }
-  return(esc) 
-  #returns value of 0 or 1, if the value is 1, prisoner escaped, if 0 prisoner did not escape.
-}
 
 pall<- function(n,strategy, nreps){
   #input: n, where 2*n is number of prisoners
