@@ -180,7 +180,6 @@ dloop<- function(n,nreps){
   for (i in (1:nreps)){ # repeating the simulation nreps times
     loops<- integer(2*n) #to store if a loop of length i is found
     cards<- sample(1:(2*n)) #randomly shuffling the cards
-    print(cards)
     for (ii in k){ #looping over each prisoner
       card<-cards[ii]
       opened<- c(card)
