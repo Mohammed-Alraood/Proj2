@@ -214,10 +214,11 @@ dloop<- function(n,nreps){
 #estimate the probabilities of lengeth of loops
 prob_of_loops<- dloop(50,1000)#calling dloop function to estimate probability for n=50 with 1000 replications
 print(prob_of_loops) #print 2n-vector of probabilites 
-plot(prob_of_loops, type='l', main="Probability of loop lengths ocuring atleast once", xlab = "Loop Length", ylab= "Probability") #visualize the probabilities
+plot(prob_of_loops, type='l', main="Probability of loop lengths occuring at least once", xlab = "Loop Length", ylab= "Probability") #visualize the probabilities
 
 #assessing the probabilities that no loop longer than 50
 sum_prob_more_50<- sum(prob_of_loops[51:length(prob_of_loops)]) #sum probabilities more than 50
 prob_of_no_50 <- 1-sum_prob_more_50
 cat("The probability of no loop more than 50 is: ",prob_of_no_50, ".") #printing probability of no loop more than 50
 
+#end of the prisoners problem simulation
